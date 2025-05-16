@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/react-sarah-crochet/static/css/main.f855e6bc.css",
+    "main.js": "/react-sarah-crochet/static/js/main.e745511a.js",
+    "static/js/453.a3122ec2.chunk.js": "/react-sarah-crochet/static/js/453.a3122ec2.chunk.js",
+    "static/media/logo.svg": "/react-sarah-crochet/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/react-sarah-crochet/index.html",
+    "main.f855e6bc.css.map": "/react-sarah-crochet/static/css/main.f855e6bc.css.map",
+    "main.e745511a.js.map": "/react-sarah-crochet/static/js/main.e745511a.js.map",
+    "453.a3122ec2.chunk.js.map": "/react-sarah-crochet/static/js/453.a3122ec2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.e745511a.js"
+  ]
+}

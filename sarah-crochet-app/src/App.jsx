@@ -1,15 +1,13 @@
 import "./App.css";
 import ButtonAppBar from "./components/Navbar";
+import ImageCarousel from "./pages/Home";
 
 function App() {
   return (
     <div>
       <ButtonAppBar/>
+      <ImageCarousel/>
     </div>
-    // <div>
-    //   {/* <NavBarDefault /> */}
-      // <h1 className="text-3xl font-bold underline">Hello World</h1>
-    // </div>
   );
 }
 

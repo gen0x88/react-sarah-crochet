@@ -7,30 +7,7 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { useNavigate } from "react-router";
-
-const items = [
-  {
-    id: 1,
-    name: "Peas in a pod",
-    price: "$5.99",
-    image: require("../img/peasinapod.jpg"),
-    handmadeBy: "Sarah",
-  },
-  {
-    id: 2,
-    name: "Watermelon on a stick",
-    price: "$12.99",
-    image: require("../img/watermelon.jpg"),
-    handmadeBy: "Sarah",
-  },
-  {
-    id: 3,
-    name: "monkey",
-    price: "$9.99",
-    image: require("../img/monkey.jpg"),
-    handmadeBy: "Sarah",
-  },
-];
+import { database } from "../database";
 
 export default function CrochetShopPage() {
   const [sort, setSort] = React.useState("default");
@@ -55,7 +32,7 @@ export default function CrochetShopPage() {
         </ToggleButtonGroup>
       </div>
       <Grid container spacing={4}>
-        {items.map((item, index) => (
+        {database.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <div onClick={() => navigate(`/item/${item.id}`)}>
               <Card className="rounded-2xl shadow-md cursor-pointer">

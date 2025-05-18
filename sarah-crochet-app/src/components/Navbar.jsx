@@ -88,7 +88,7 @@ export default function ButtonAppBar() {
           <IconButton>
             <SearchIcon onClick={() => {navigate(`/shop/search/${searchItem}`); console.log(searchItem)}}/>
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => navigate('/cart')}>
             <ShoppingCartIcon />
             <CartBadge badgeContent={2} color="primary" overlap="cirular" />
           </IconButton>

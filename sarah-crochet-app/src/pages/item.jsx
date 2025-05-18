@@ -1,66 +1,123 @@
-import { Button } from "@mui/material";
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+} from "@mui/material";
+import { database } from "../database";
 
-const items = [
-  {
-    id: 1,
-    name: "Peas in a pod",
-    price: "$5.99",
-    image: require("../img/peasinapod.jpg"),
-    description:
-      "A cute set of peas snuggled together in a soft green pod. Perfect for gifts or decor!",
-    handmadeBy: "Sarah",
-  },
-  {
-    id: 2,
-    name: "Watermelon on a stick",
-    price: "$12.99",
-    image: require("../img/watermelon.jpg"),
-    description:
-      "A cheerful watermelon slice on a stick, full of personality and color.",
-    handmadeBy: "Sarah",
-  },
-];
-
-export default function ItemDetailsPage() {
+export default function ItemPage() {
   const { id } = useParams();
+  const item = database.find((i) => i.id === parseInt(id));
+  const [selectedImage, setSelectedImage] = useState(item.image);
+  const [quantity, setQuantity] = useState(1);
+  const [descOrReview, setDescOrReview] = useState("description");
   const navigate = useNavigate();
-  const item = items.find((item) => item.id === parseInt(id));
-
-  const handleAddToCart = () => {
-    alert(`${item.name} has been added to your cart!`);
-  };
-
-  if (!item) {
-    return <div className="p-6 text-red-600">Item not found</div>;
-  }
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6">
       <Button onClick={() => navigate(-1)} className="mb-4">
         Back
       </Button>
-      <div className="rounded-2xl shadow-lg overflow-hidden">
-        <img
-          src={item.image}
-          alt={item.name}
-          className="w-full h-96 object-cover"
-        />
-        <div className="bg-white p-6">
-          <h1 className="text-3xl font-bold mb-2">{item.name}</h1>
-          <p className="text-green-600 text-xl font-semibold mb-4">
-            {item.price}
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex md:flex-col gap-2">
+            {item.thumbnails.map((thumb, index) => (
+              <img
+                key={index}
+                src={thumb}
+                alt="Thumbnail"
+                onClick={() => setSelectedImage(thumb)}
+                className="w-20 h-20 object-cover rounded-lg border cursor-pointer hover:border-gray-400"
+              />
+            ))}
+          </div>
+          <img
+            src={selectedImage}
+            alt={item.name}
+            className="w-full md:w-[400px] h-[300px] object-cover rounded-lg"
+          />
+        </div>
+
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 mb-1">{item.category}</p>
+          <h2 className="text-3xl font-bold mb-2">{item.name}</h2>
+          <p className="text-green-600 text-xl font-semibold mb-2">
+            ${item.price}
           </p>
-          <p className="text-gray-700 mb-4">{item.description}</p>
-          <p className="text-sm text-gray-500">Handmade by {item.handmadeBy}</p>
-          <Button
-            onClick={handleAddToCart}
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
+          <p className="text-sm text-gray-500 mb-4">
+            Tax included. Shipping costs are calculated at checkout
+          </p>
+          <p className="font-semibold mb-2">
+            Availability: {item.availability}
+          </p>
+          <div className="flex items-center gap-4 mb-4">
+            <label htmlFor="qty" className="font-medium">
+              Qty:
+            </label>
+            <Select
+              id="qty"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              size="small"
+              className="bg-white"
+            >
+              {[1, 2, 3, 4, 5].map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <Button className="bg-red-600 text-white hover:bg-red-700">
             Add to Cart
           </Button>
         </div>
+      </div>
+
+      <div className="mt-10 border-t pt-6">
+        <FormControl>
+          <RadioGroup
+            row
+            defaultValue="description"
+            name="row-radio-buttons-group"
+          >
+            <FormControlLabel
+              value="description"
+              control={
+                <Radio
+                  icon={<span style={{ color: "#000" }} />}
+                  checkedIcon={<span style={{ color: "#000" }} />}
+                />
+              }
+              label="Description"
+              className={descOrReview === "description" ? "underline" : ""}
+              onClick={(e) => setDescOrReview(e.target.value)}
+            />
+            <FormControlLabel
+              value="reviews"
+              control={
+                <Radio
+                  icon={<span style={{ color: "#000" }} />}
+                  checkedIcon={<span style={{ color: "#000" }} />}
+                />
+              }
+              className={descOrReview === "reviews" ? "underline" : ""}
+              label="Reviews"
+              onClick={(e) => setDescOrReview(e.target.value)}
+            />
+          </RadioGroup>
+        </FormControl>
+        {descOrReview === "description" ? (
+          <p className="text-gray-700 leading-relaxed">{item.description}</p>
+        ) : (
+          <p>No reviews yet</p>
+        )}
       </div>
     </div>
   );

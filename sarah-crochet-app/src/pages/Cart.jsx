@@ -1,25 +1,10 @@
+import { Button } from "@mui/material";
 import React from "react";
-import { Button } from "@/components/ui/button";
 
-const cartItems = [
-  {
-    id: 1,
-    name: "Peas in a pod",
-    price: 5.99,
-    quantity: 1,
-    image: require("../img/peasinapod.jpg"),
-  },
-  {
-    id: 2,
-    name: "Watermelon on a stick",
-    price: 12.99,
-    quantity: 1,
-    image: require("../img/watermelon.jpg"),
-  },
-];
+import { database } from "../database";
 
 export default function CartPage() {
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = database.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = subtotal * 0.111;
   const shipping = 3.0;
   const total = subtotal + tax + shipping;
@@ -27,11 +12,11 @@ export default function CartPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-4xl font-serif font-bold mb-2">Cart</h1>
-      <p className="text-gray-600 mb-6">{cartItems.length} items</p>
+      <p className="text-gray-600 mb-6">{database.length} items</p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">
-          {cartItems.map((item) => (
+          {database.map((item) => (
             <div
               key={item.id}
               className="flex items-center bg-neutral-50 rounded-2xl shadow-md overflow-hidden"

@@ -43,7 +43,7 @@ export default function CrochetShopPage() {
                 />
                 <CardContent className="bg-neutral-50">
                   <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-green-600 font-bold">{item.price}</p>
+                  <p className="text-green-600 font-bold">${item.price}</p>
                   <p className="text-sm text-gray-600">
                     Handmade by {item.handmadeBy}
                   </p>

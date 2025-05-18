@@ -19,6 +19,24 @@ export default function ItemPage() {
   const [descOrReview, setDescOrReview] = useState("description");
   const navigate = useNavigate();
 
+  const addToCart = () => {
+    const addedCart = []
+    if (localStorage.getItem('cart')) {
+      const currentCart = JSON.parse(localStorage.getItem('cart'))
+      if (currentCart.find(e => e.id === item.id)) {
+        currentCart[currentCart.indexOf(currentCart.find(e => e.id === item.id))].quantity = quantity
+        addedCart.push(...currentCart)
+      } else {
+        addedCart.push(...currentCart)
+        addedCart.push({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
+      }
+    } else {
+      addedCart.push({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
+    }
+    localStorage.setItem('cart', JSON.stringify(addedCart))
+    console.log({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
+  }
+
   return (
     <div className="p-6">
       <Button onClick={() => navigate(-1)} className="mb-4">
@@ -33,7 +51,7 @@ export default function ItemPage() {
                 src={thumb}
                 alt="Thumbnail"
                 onClick={() => setSelectedImage(thumb)}
-                className="w-20 h-20 object-cover rounded-lg border cursor-pointer hover:border-gray-400"
+                className="w-20 h-20 object-cover rounded-lg border cursor-pointer hover:border-black-400"
               />
             ))}
           </div>
@@ -74,7 +92,7 @@ export default function ItemPage() {
               ))}
             </Select>
           </div>
-          <Button className="bg-red-600 text-white hover:bg-red-700">
+          <Button onClick={addToCart} variant="filled" className="bg-red-600 text-white hover:bg-red-700">
             Add to Cart
           </Button>
         </div>

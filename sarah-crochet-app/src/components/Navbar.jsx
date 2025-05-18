@@ -19,8 +19,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router";
+import { useCart } from "./useCart";
 
-const navItems = [{ name: "Shop", url: '/shop' }, { name: "About Us", url: '/aboutus' }, { name: "Login", url: '/login' }];
+const navItems = [
+  { name: "Shop", url: "/shop" },
+  { name: "About Us", url: "/aboutus" },
+  { name: "Login", url: "/login" },
+];
 
 const CartBadge = styled(Badge)`
   & .${badgeClasses.badge} {
@@ -31,8 +36,9 @@ const CartBadge = styled(Badge)`
 
 export default function ButtonAppBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [searchItem, setSearchItem] = React.useState('')
-  const navigate = useNavigate()
+  const [searchItem, setSearchItem] = React.useState("");
+  const navigate = useNavigate();
+  const { cart, setCart } = useCart();
 
   const drawer = (
     <Box onClick={() => setDrawerOpen(false)} sx={{ width: 250 }}>
@@ -71,7 +77,7 @@ export default function ButtonAppBar() {
             component="div"
             sx={{ flexGrow: 1 }}
             color="green"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="cursor-pointer"
           >
             Sarah's Crochet Hub
@@ -79,18 +85,36 @@ export default function ButtonAppBar() {
 
           <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}>
             {navItems.map((item) => (
-              <Button key={navItems.indexOf(item)} color="green" onClick={() => navigate(`/${item.url}`)}>
+              <Button
+                key={navItems.indexOf(item)}
+                color="green"
+                onClick={() => navigate(`/${item.url}`)}
+              >
                 {item.name}
               </Button>
             ))}
           </Box>
-          <TextField id="filled-basic" label="Search Something" variant="filled" onChange={(e) => setSearchItem(e.target.value)} />
+          <TextField
+            id="filled-basic"
+            label="Search Something"
+            variant="filled"
+            onChange={(e) => setSearchItem(e.target.value)}
+          />
           <IconButton>
-            <SearchIcon onClick={() => {navigate(`/shop/search/${searchItem}`); console.log(searchItem)}}/>
+            <SearchIcon
+              onClick={() => {
+                navigate(`/shop/search/${searchItem}`);
+                console.log(searchItem);
+              }}
+            />
           </IconButton>
-          <IconButton onClick={() => navigate('/cart')}>
+          <IconButton onClick={() => navigate("/cart")}>
             <ShoppingCartIcon />
-            <CartBadge badgeContent={2} color="primary" overlap="cirular" />
+            <CartBadge
+              badgeContent={cart.length}
+              color="primary"
+              overlap="cirular"
+            />
           </IconButton>
         </Toolbar>
       </AppBar>

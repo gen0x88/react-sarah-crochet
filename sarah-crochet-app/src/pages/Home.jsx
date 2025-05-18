@@ -6,9 +6,9 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router";
 
 const images = [
-  { src: require("../img/octopus 2.jpg"), caption: "Octopus: $12 each" },
-  { src: require("../img/milk 4.jpg"), caption: "Milk Cartons $6 each" },
-  { src: require("../img/duck.jpg"), caption: "Ducks $10 each" },
+  { src: require("../img/octopus 2.jpg"), caption: "Octopus: $12 each", url: '/item/4' },
+  { src: require("../img/milk 4.jpg"), caption: "Milk Cartons $6 each", url: '/item/5' },
+  { src: require("../img/duck.jpg"), caption: "Ducks $10 each", url: '/item/6' },
 ];
 
 function SampleNextArrow(props) {

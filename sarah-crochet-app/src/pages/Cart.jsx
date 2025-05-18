@@ -1,22 +1,30 @@
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import { database } from "../database";
+import { useCart } from "../components/useCart";
 
 export default function CartPage() {
-  const subtotal = database.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const tax = subtotal * 0.111;
-  const shipping = 3.0;
-  const total = subtotal + tax + shipping;
+  const { cart, setCart, updateQuantity, subtotal, tax, shipping, total } = useCart();
+
+  const handleKeyDown = (e, id) => {
+    if (e.key === "ArrowUp") updateQuantity(id, 1);
+    if (e.key === "ArrowDown") updateQuantity(id, -1);
+  };
+
+  const handleDelete = (e, id) => {
+    if (!id) return
+    setCart(prevItems => prevItems.filter(item => item.id !== id))
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-4xl font-serif font-bold mb-2">Cart</h1>
-      <p className="text-gray-600 mb-6">{database.length} items</p>
+      <p className="text-gray-600 mb-6">{cart.length} items</p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">
-          {database.map((item) => (
+          {cart.map((item) => (
             <div
               key={item.id}
               className="flex items-center bg-neutral-50 rounded-2xl shadow-md overflow-hidden"
@@ -28,19 +36,25 @@ export default function CartPage() {
               />
               <div className="p-4 flex-grow">
                 <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-green-600 font-bold">${item.price.toFixed(2)}</p>
+                <p className="text-green-600 font-bold">
+                  ${item.price.toFixed(2)}
+                </p>
                 <div className="mt-2">
                   <input
                     type="number"
                     min="1"
                     value={item.quantity}
                     className="w-20 p-2 border rounded-md"
+                    onKeyDown={(e) => handleKeyDown(e, item.id)}
                   />
                 </div>
               </div>
               <div className="p-4 text-right font-semibold">
                 ${(item.price * item.quantity).toFixed(2)}
               </div>
+              <IconButton onClick={(e) => handleDelete(e, item.id)}>
+                <DeleteIcon></DeleteIcon>
+              </IconButton>
             </div>
           ))}
         </div>
@@ -65,6 +79,7 @@ export default function CartPage() {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
+
           <Button className="mt-6 w-full bg-green-700 hover:bg-green-800 text-white">
             Continue to payment
           </Button>

@@ -1,13 +1,9 @@
 import "./App.css";
-import ButtonAppBar from "./components/Navbar";
-import ImageCarousel from "./pages/Home";
+import AppRoutes from "./Router";
 
 function App() {
   return (
-    <div>
-      <ButtonAppBar/>
-      <ImageCarousel/>
-    </div>
+      <AppRoutes/>
   );
 }
 

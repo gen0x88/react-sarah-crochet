@@ -1,15 +1,14 @@
 import { Button, IconButton } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { useCart } from "../components/useCart";
+import { CartContext } from "../components/CartContext";
 
 export default function CartPage() {
-  const { cart, setCart, updateQuantity, subtotal, tax, shipping, total } = useCart();
+  const { cart, setCart, updateQuantity, subtotal, tax, shipping, total } = useContext(CartContext);
 
   const handleKeyDown = (e, id) => {
-    if (e.key === "ArrowUp") updateQuantity(id, 1);
-    if (e.key === "ArrowDown") updateQuantity(id, -1);
+    updateQuantity(id, e.target.value);
   };
 
   const handleDelete = (e, id) => {
@@ -43,9 +42,9 @@ export default function CartPage() {
                   <input
                     type="number"
                     min="1"
-                    value={item.quantity}
+                    defaultValue={item.quantity}
+                    onChange={(e) => handleKeyDown(e, item.id)}
                     className="w-20 p-2 border rounded-md"
-                    onKeyDown={(e) => handleKeyDown(e, item.id)}
                   />
                 </div>
               </div>

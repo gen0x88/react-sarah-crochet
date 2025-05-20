@@ -5,6 +5,7 @@ import AboutUsPage from "./pages/Aboutus";
 import ButtonAppBar from './components/Navbar';
 import ItemDetailsPage from './pages/item';
 import CartPage from './pages/Cart';
+import SearchPage from './pages/Search';
 
 export default function AppRoutes() {
     return (
@@ -13,6 +14,8 @@ export default function AppRoutes() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/shop" element={<ShopPage />} />
+                <Route path="/shop/search/" element={<SearchPage />} />
+                <Route path="/shop/search/:name" element={<SearchPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/item/:id" element={<ItemDetailsPage />} />
                 <Route path="/aboutus" element={<AboutUsPage />} />

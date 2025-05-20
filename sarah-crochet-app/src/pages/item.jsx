@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Box,
   Button,
   FormControl,
   FormControlLabel,
   MenuItem,
+  Modal,
   Radio,
   RadioGroup,
   Select,
+  Typography,
 } from "@mui/material";
 import { database } from "../database";
+import { CartContext } from "../components/CartContext";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  // width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  backgroundColor: "white",
+  padding: '10px'
+};
 
 export default function ItemPage() {
   const { id } = useParams();
@@ -19,26 +37,42 @@ export default function ItemPage() {
   const [descOrReview, setDescOrReview] = useState("description");
   const navigate = useNavigate();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+
+  const { cart, setCart } = useContext(CartContext);
+
   const addToCart = () => {
-    const addedCart = []
-    if (localStorage.getItem('cart')) {
-      const currentCart = JSON.parse(localStorage.getItem('cart'))
-      if (currentCart.find(e => e.id === item.id)) {
-        currentCart[currentCart.indexOf(currentCart.find(e => e.id === item.id))].quantity = quantity
-        addedCart.push(...currentCart)
-      } else {
-        addedCart.push(...currentCart)
-        addedCart.push({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
-      }
+    setIsModalOpen(true);
+    if (cart.length > 0) {
+      // cart[cart.findIndex(e => e.id === item.id)].quantity = item.quantity
+      setCart([...cart, {
+        id: item.id,
+        name: item.name,
+        quantity: quantity,
+        price: item.price,
+        image: item.image,
+      }]);
     } else {
-      addedCart.push({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
+      setCart([{
+        id: item.id,
+        name: item.name,
+        quantity: quantity,
+        price: item.price,
+        image: item.image,
+      }]);
     }
-    localStorage.setItem('cart', JSON.stringify(addedCart))
-    console.log({id: item.id, name: item.name, quantity: quantity, price: item.price, image: item.image})
-  }
+  };
 
   return (
     <div className="p-6">
+      <Modal open={isModalOpen} onClose={closeModal}>
+        <Box style={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {item.name} x {quantity} added to cart
+          </Typography>
+        </Box>
+      </Modal>
       <Button onClick={() => navigate(-1)} className="mb-4">
         Back
       </Button>
@@ -92,7 +126,11 @@ export default function ItemPage() {
               ))}
             </Select>
           </div>
-          <Button onClick={addToCart} variant="filled" className="bg-red-600 text-white hover:bg-red-700">
+          <Button
+            onClick={addToCart}
+            variant="filled"
+            className="bg-red-600 text-white hover:bg-red-700"
+          >
             Add to Cart
           </Button>
         </div>

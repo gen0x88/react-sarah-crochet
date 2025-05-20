@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router";
-import { useCart } from "./useCart";
+import { CartContext } from "./CartContext";
 
 const navItems = [
   { name: "Shop", url: "/shop" },
@@ -38,7 +38,11 @@ export default function ButtonAppBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [searchItem, setSearchItem] = React.useState("");
   const navigate = useNavigate();
-  const { cart, setCart } = useCart();
+  const { cart } = React.useContext(CartContext);
+
+  React.useEffect(() => {
+    console.log("Cart updated:", cart); // Log cart to check if it's updating
+  }, [cart]);
 
   const drawer = (
     <Box onClick={() => setDrawerOpen(false)} sx={{ width: 250 }}>
@@ -99,6 +103,7 @@ export default function ButtonAppBar() {
             label="Search Something"
             variant="filled"
             onChange={(e) => setSearchItem(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { navigate(`/shop/search/${searchItem}`)}; console.log(e.key) }}
           />
           <IconButton>
             <SearchIcon

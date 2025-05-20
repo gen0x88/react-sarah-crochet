@@ -1,9 +1,12 @@
 import "./App.css";
+import { CartProvider } from "./components/CartProvider";
 import AppRoutes from "./Router";
 
 function App() {
   return (
-      <AppRoutes/>
+    <CartProvider>
+      <AppRoutes />
+    </CartProvider>
   );
 }
 

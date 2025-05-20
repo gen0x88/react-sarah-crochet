@@ -1,4 +1,4 @@
-import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -6,44 +6,34 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { useNavigate } from "react-router";
 import { database } from "../database";
 
-export default function CrochetShopPage() {
-  const [sort, setSort] = React.useState("default");
+export default function SearchPage() {
+  const { name } = useParams();
   const navigate = useNavigate();
-  const SortedAZDb =
-    sort === "default"
-      ? database
-      : database.toSorted((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-
-  const handleFilter = (event, newValue) => {
-    if (newValue !== null) {
-      console.log(event, newValue, event.target.value);
-      setSort(event.target.value);
-    }
-  };
+  const currentDb = name === undefined ? database : database.filter(item => item.name.toLowerCase().includes(name.toLowerCase()))
 
   return (
     <div className="p-6">
       <h1 className="text-4xl font-serif font-bold mb-4 my-12">
-        Crochet Items
+        Search results for "{name}"
       </h1>
+      {currentDb.length === 0 ? <div>No results for "{name}"</div> : <div></div>}
       <div className="flex justify-between items-center mb-6">
         <div></div>
         <ToggleButtonGroup
-          value={sort}
-          onChange={handleFilter}
+          type="single"
+          //   value={sort}
+          //   onValueChange={(value) => setSort(value)}
           className="space-x-2"
         >
           <ToggleButton value="default">Default</ToggleButton>
           <ToggleButton value="az">A-Z</ToggleButton>
+          <ToggleButton value="list">List view</ToggleButton>
         </ToggleButtonGroup>
       </div>
       <Grid container spacing={4}>
-        {SortedAZDb.map((item, index) => (
+        {currentDb.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <div onClick={() => navigate(`/item/${item.id}`)}>
               <Card className="rounded-2xl shadow-md cursor-pointer">

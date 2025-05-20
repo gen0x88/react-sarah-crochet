@@ -70,6 +70,7 @@ export const database = [
     description:
       "Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text.",
     availability: "In Stock",
+    variant: ['yellow', 'blue', 'pink']
   },
   {
     id: 6,
@@ -84,5 +85,6 @@ export const database = [
     description:
       "Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text. Alot of sample text.",
     availability: "In Stock",
+    variant: ['beige', 'yellow']
   },
 ];

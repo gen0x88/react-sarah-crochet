@@ -5,15 +5,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CartContext } from "../components/CartContext";
 
 export default function CartPage() {
-  const { cart, setCart, updateQuantity, subtotal, tax, shipping, total } = useContext(CartContext);
+  const { cart, setCart, updateKey, subtotal, tax, shipping, total } = useContext(CartContext);
 
   const handleKeyDown = (e, id) => {
-    updateQuantity(id, e.target.value);
+    updateKey(id, 'quantity', e.target.value);
   };
 
-  const handleDelete = (e, id) => {
-    if (!id) return
-    setCart(prevItems => prevItems.filter(item => item.id !== id))
+  const handleDelete = (e, item) => {
+    if (!item) return
+    setCart(prevItems => prevItems.filter(e => !(e.id === item.id && e.variant === item.variant)))
   }
 
   return (
@@ -34,7 +34,8 @@ export default function CartPage() {
                 className="w-32 h-32 object-cover rounded-l-2xl"
               />
               <div className="p-4 flex-grow">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
+                <h2 onClick={(e) => console.log(item)} className="text-lg font-semibold">{item.name}</h2>
+                <h2 className="text-sm text-gray-600">{item.variant === 0 ? null : "Variant: " + item.variant}</h2>
                 <p className="text-green-600 font-bold">
                   ${item.price.toFixed(2)}
                 </p>
@@ -42,6 +43,7 @@ export default function CartPage() {
                   <input
                     type="number"
                     min="1"
+                    max={10}
                     defaultValue={item.quantity}
                     onChange={(e) => handleKeyDown(e, item.id)}
                     className="w-20 p-2 border rounded-md"
@@ -51,7 +53,7 @@ export default function CartPage() {
               <div className="p-4 text-right font-semibold">
                 ${(item.price * item.quantity).toFixed(2)}
               </div>
-              <IconButton onClick={(e) => handleDelete(e, item.id)}>
+              <IconButton onClick={(e) => handleDelete(e, item)}>
                 <DeleteIcon></DeleteIcon>
               </IconButton>
             </div>

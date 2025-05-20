@@ -68,7 +68,7 @@ export default function HomePage() {
       <Box sx={{ maxWidth: 800, margin: "auto", mt: 4 }}>
         <Slider {...settings}>
           {images.map((item, index) => (
-            <Box key={index} sx={{ position: "relative" }}>
+            <Box className='cursor-pointer' key={index} sx={{ position: "relative" }} onClick={() => navigate(item.url)}>
               <img
                 src={item.src}
                 alt={`Slide ${index}`}

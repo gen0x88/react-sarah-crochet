@@ -3,7 +3,7 @@ import React from 'react';
 export const CartContext = React.createContext({
   cart: [],
   setCart: () => {},
-  updateQuantity: () => {},
+  updateKey: () => {},
   updateCart: () => {},
   subtotal: 0,
   tax: 0,

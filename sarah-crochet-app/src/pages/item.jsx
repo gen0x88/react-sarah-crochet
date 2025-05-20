@@ -26,41 +26,55 @@ const style = {
   boxShadow: 24,
   p: 4,
   backgroundColor: "white",
-  padding: '10px'
+  padding: "10px",
 };
 
 export default function ItemPage() {
   const { id } = useParams();
   const item = database.find((i) => i.id === parseInt(id));
+  const variantValue = item.variant;
   const [selectedImage, setSelectedImage] = useState(item.image);
   const [quantity, setQuantity] = useState(1);
+  const [variant, setVariant] = useState(variantValue ? variantValue[0] : 0);
   const [descOrReview, setDescOrReview] = useState("description");
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => setIsModalOpen(false);
+  const { cart, setCart, updateKey } = useContext(CartContext);
 
-  const { cart, setCart } = useContext(CartContext);
+  const inCart = cart.find((e) => e.id === item.id && e.variant === variant)
 
   const addToCart = () => {
     setIsModalOpen(true);
     if (cart.length > 0) {
-      // cart[cart.findIndex(e => e.id === item.id)].quantity = item.quantity
-      setCart([...cart, {
-        id: item.id,
-        name: item.name,
-        quantity: quantity,
-        price: item.price,
-        image: item.image,
-      }]);
+      if (cart.find((e) => e.id === item.id && e.variant === variant)) {
+        updateKey(item.id, "quantity", quantity);
+        updateKey(item.id, "variant", variant);
+      } else {
+        setCart([
+          ...cart,
+          {
+            id: item.id,
+            name: item.name,
+            quantity: quantity,
+            price: item.price,
+            image: item.image,
+            variant: variant,
+          },
+        ]);
+      }
     } else {
-      setCart([{
-        id: item.id,
-        name: item.name,
-        quantity: quantity,
-        price: item.price,
-        image: item.image,
-      }]);
+      setCart([
+        {
+          id: item.id,
+          name: item.name,
+          quantity: quantity,
+          price: item.price,
+          image: item.image,
+          variant: variant,
+        },
+      ]);
     }
   };
 
@@ -69,7 +83,7 @@ export default function ItemPage() {
       <Modal open={isModalOpen} onClose={closeModal}>
         <Box style={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {item.name} x {quantity} added to cart
+            {!inCart ? item.name + " x" + quantity + " added to cart" : item.name + ' updated to x' + quantity}
           </Typography>
         </Box>
       </Modal>
@@ -119,19 +133,46 @@ export default function ItemPage() {
               size="small"
               className="bg-white"
             >
-              {[1, 2, 3, 4, 5].map((num) => (
+              {Array.from({length: 10}, (_, i) => i + 1).map((num) => (
                 <MenuItem key={num} value={num}>
                   {num}
                 </MenuItem>
               ))}
             </Select>
           </div>
+          {variant ? (
+            <>
+              <div>Variant: </div>
+              <Select
+                id="variant"
+                defaultValue={variantValue[0]}
+                onChange={(e) => setVariant(e.target.value)}
+                className="my-3"
+              >
+                {variantValue ? (
+                  variantValue.map((item, index) => (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <div></div>
+                )}
+              </Select>
+            </>
+          ) : (
+            <div></div>
+          )}
+          <br />
           <Button
             onClick={addToCart}
-            variant="filled"
+            variant="contained"
             className="bg-red-600 text-white hover:bg-red-700"
+            color="error"
           >
-            Add to Cart
+            {cart.find((e) => e.id === item.id && e.variant === variant)
+              ? "Update Quantity"
+              : "Add to Cart"}
           </Button>
         </div>
       </div>

@@ -17,11 +17,11 @@ export const CartProvider = ({children}) => {
     })
   }
 
-  const updateQuantity = (itemId, updatedQ) => {
+  const updateKey = (itemId, key ,updatedQ) => {
     setCart((prev) =>
       prev.map((item) =>
         item.id === itemId
-          ? { ...item, quantity: updatedQ }
+          ? { ...item, [key]: updatedQ }
           : item
       )
     );
@@ -36,7 +36,7 @@ export const CartProvider = ({children}) => {
       value={{
         cart,
         setCart,
-        updateQuantity,
+        updateKey,
         updateCart,
         subtotal,
         tax,

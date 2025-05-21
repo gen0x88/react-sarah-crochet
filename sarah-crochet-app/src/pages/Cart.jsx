@@ -3,9 +3,11 @@ import React, { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { CartContext } from "../components/CartContext";
+import { useNavigate } from "react-router";
 
 export default function CartPage() {
   const { cart, setCart, updateKey, subtotal, tax, shipping, total } = useContext(CartContext);
+  const navigate = useNavigate()
 
   const handleKeyDown = (e, id) => {
     updateKey(id, 'quantity', e.target.value);
@@ -23,9 +25,9 @@ export default function CartPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-4">
-          {cart.map((item) => (
+          {cart.map((item, index) => (
             <div
-              key={item.id}
+              key={index}
               className="flex items-center bg-neutral-50 rounded-2xl shadow-md overflow-hidden"
             >
               <img
@@ -34,7 +36,7 @@ export default function CartPage() {
                 className="w-32 h-32 object-cover rounded-l-2xl"
               />
               <div className="p-4 flex-grow">
-                <h2 onClick={(e) => console.log(item)} className="text-lg font-semibold">{item.name}</h2>
+                <h2 onClick={(e) => navigate(`/item/${item.id}`)} className="text-lg font-semibold cursor-pointer">{item.name}</h2>
                 <h2 className="text-sm text-gray-600">{item.variant === 0 ? null : "Variant: " + item.variant}</h2>
                 <p className="text-green-600 font-bold">
                   ${item.price.toFixed(2)}

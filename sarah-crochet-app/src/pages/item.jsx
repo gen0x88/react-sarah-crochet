@@ -20,7 +20,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  // width: 400,
+  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -40,7 +40,10 @@ export default function ItemPage() {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = (e) => {
+    if (e === null) return
+    setIsModalOpen(false)
+  };
   const { cart, setCart, updateKey } = useContext(CartContext);
 
   const inCart = cart.find((e) => e.id === item.id && e.variant === variant)
@@ -84,6 +87,10 @@ export default function ItemPage() {
         <Box style={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {!inCart ? item.name + " x" + quantity + " added to cart" : item.name + ' updated to x' + quantity}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Button onClick={closeModal}>Close</Button>
+            <Button onClick={(e) => navigate('/cart')}>Cart</Button>
           </Typography>
         </Box>
       </Modal>

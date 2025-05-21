@@ -6,6 +6,7 @@ import ButtonAppBar from './components/Navbar';
 import ItemDetailsPage from './pages/item';
 import CartPage from './pages/Cart';
 import SearchPage from './pages/Search';
+import FooterBar from './components/Footer';
 
 export default function AppRoutes() {
     return (
@@ -20,6 +21,7 @@ export default function AppRoutes() {
                 <Route path="/item/:id" element={<ItemDetailsPage />} />
                 <Route path="/aboutus" element={<AboutUsPage />} />
             </Routes>
+            <FooterBar/>
         </BrowserRouter>
     );
 }
